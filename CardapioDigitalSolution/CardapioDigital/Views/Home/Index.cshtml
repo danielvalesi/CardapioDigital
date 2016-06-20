@@ -1,0 +1,31 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+</head>
+<body>
+    @ViewBag.Mensagem
+    <form action="/home/index" method="post">
+        <p>
+            E-mail <br />
+            <input type="email" name="email" value="" />
+        </p>
+
+        <p>
+            Senha <br />
+            <input type="password" name="senha" value="" />
+        </p>
+
+        <button type="submit">ENTRAR</button>
+        <a href="/home/registro">Registrar</a>
+
+    </form>
+</body>
+</html>
