@@ -1,0 +1,142 @@
+CREATE VIEW V_Pessoas
+AS
+	select 	p.id		ID,
+		p.nome		Nome,
+		p.email		Email,
+		p.senha		Senha,
+		p.cpf		CPF
+
+	from Pessoas p
+
+--teste--
+select * from V_Pessoas
+
+CREATE VIEW V_ClientesVIP
+AS
+	select	p.id			ID,
+		p.nome			Nome,
+		c.porcentagemDesconto	Desconto
+
+	from	Pessoas p, 
+		ClientesVIP c
+	where
+		p.id = c.pessoa_id
+
+--teste--
+select * from V_ClientesVIP
+
+ CREATE VIEW V_Funcionarios
+AS
+	select	p.id			ID,
+		p.nome			Nome,
+		f.cargo			Cargo,
+		f.salario		Salario,
+		f.horarioEntrada	Entrada,
+		f.horarioSaida		Saida
+
+	from	Pessoas p, 
+		Funcionarios f
+	where
+		p.id = f.pessoa_id
+
+--teste--
+select * from V_Funcionarios
+
+CREATE VIEW V_Produtos
+AS
+	select	prd.id			ID,
+		prd.nome		Nome,
+		prd.preco		Preco,
+		prd.descricao		Descricao,
+		prd.categoria		Categoria,
+		prd.tempoPreparo	TempoPreparo,
+		prd.estoque		Estoque
+
+	from 	Produtos prd
+
+--teste--
+select * from V_Produtos
+
+CREATE VIEW V_Localizacoes
+AS
+	select	l.numero	Numero,
+		l.qtdLugares	Lugares,
+		l.descricao	Descricao,
+		l.status	Status
+
+	from Localizacoes l
+
+--teste--
+select * from V_Localizacoes
+
+CREATE VIEW V_Contas
+AS
+	select	p.id				ID,
+		p.nome				Nome,
+		c.porcentagemDesconto		Desconto,
+		l.numero			Localizacao,
+		cta.dataAbertura		Abertura,
+		cta.dataFechamento		Fechamento,
+		cta.status			Status,
+		cta.valor			Valor,
+		cta.formaPagamento		FormaPagamento
+
+	from 	Contas cta, 
+		Localizacoes l, 
+		ClientesVIP c, 
+		Pessoas p
+	where
+		p.id 		= c.pessoa_id 		and 
+		cta.cliente_id 	= c.pessoa_id 		and 
+		l.numero	= cta.localizacao_id
+
+--teste--
+select * from V_Contas
+
+CREATE VIEW V_Pedidos
+AS
+	select	cta.id			Conta,
+		pdd.id			Pedido,
+		pdd.status		Status,
+		pdd.dataEntrega		Entrega
+
+	from 	Pedidos pdd, 
+		Contas cta
+	where
+		cta.id = pdd.conta_id
+
+--teste--
+select * from V_Pedidos
+
+CREATE VIEW V_Itens
+AS
+	select	p.nome			Funcionario,
+		prd.nome		Produto,
+		pdd.id			Pedido,
+		i.qtd			Quantidade,
+		i.preco			Preco,
+		i.dataEntrega		Entrega,
+		i.status		Status
+
+	from	Itens		i,
+		Produtos	prd,
+		Funcionarios	f,
+		Pessoas		p,
+		Pedidos		pdd
+	where
+		p.id 	= f.funcionario_id 	and
+		prd.id 	= i.produto_id 		and
+		pdd.id 	= i.pedido_id
+		
+
+--teste--
+select * from V_Itens
+
+
+
+
+
+
+
+
+

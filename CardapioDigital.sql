@@ -8,15 +8,15 @@ CREATE TABLE Pessoas
 (
 	id		int				not null primary key identity,
 	nome	varchar(50)		not null,
-	email	varchar(100)	not null,
+	email	varchar(100)	not null unique,
 	senha	varchar(32)		not null,
-	cpf		varchar(16)		not null
+	cpf		varchar(16)		not null unique,
+	imagem	varchar(max)		null
 )
 GO
 
 CREATE TABLE ClientesVIP
 (
-	--id						int				not null identity,
 	pessoa_id				int				not null ,
 	porcentagemDesconto		decimal(4,2)	not null
 	primary key(pessoa_id),
@@ -85,6 +85,7 @@ CREATE TABLE Pedidos
 	dataEntrega datetime			null
 	foreign key(conta_id) references Contas(id)
 )
+go
 
 CREATE TABLE Itens
 (
@@ -98,7 +99,7 @@ CREATE TABLE Itens
 	PRIMARY KEY(produto_id, pedido_id, funcionario_id),
 	FOREIGN KEY(produto_id) references Produtos(id),
 	FOREIGN KEY(funcionario_id) references Funcionarios(pessoa_id),
-	FOREIGN KEY(pedido_id) references Contas(id)
+	FOREIGN KEY(pedido_id) references Pedidos(id)
 )
 GO
 
@@ -107,22 +108,22 @@ INSERT INTO Localizacoes VALUES(3, 'mesa do inicio', 1)
 go
 
 
-INSERT INTO Pessoas	VALUES('DIOGO', 'DIOGO@GMAIL.COM', '654321', '321.321.321-21')
+INSERT INTO Pessoas	VALUES('DIOGO', 'DIOGO@GMAIL.COM', '654321', '321.321.321-21', null)
 INSERT INTO Funcionarios VALUES(@@IDENTITY, 'GARÇOM', 350.00, GETDATE(), NULL)
 go
 
-INSERT INTO Pessoas	VALUES('DANIEL LEITE', 'DANIEL@GMAIL.COM', '123456', '123.123.123-12')
+INSERT INTO Pessoas	VALUES('DANIEL LEITE', 'DANIEL@GMAIL.COM', '123456', '123.123.123-12', null)
 INSERT INTO ClientesVIP VALUES(@@IDENTITY, 0.2)
 go
 
-INSERT INTO Pessoas	VALUES('GUSTAVO', 'GUSTAVO@GMAIL.COM', '123456', '123.132.123-12')
+INSERT INTO Pessoas	VALUES('GUSTAVO', 'GUSTAVO@GMAIL.COM', '123456', '122.132.123-12', null)
 INSERT INTO ClientesVIP VALUES(@@IDENTITY, 0.4)
 go
 
 INSERT INTO Contas VALUES(1, 2, getdate(), null, 0, null, 0)
 go
 INSERT INTO Produtos VALUES ('coca-cola', 4.50, 'refrigerante sabor cola da marca coca cola', 0, null, 0, 10)
-INSERT INTO Produtos VALUES ('cheddar com cheddar cheddar', 25.50, 'o sanduba mais gostoso do rolê', 1, null, 30, null)
+INSERT INTO Produtos VALUES ('lanche de cheddar', 25.50, 'lanche de hamburguer, cebola caramelizada e cheddar', 1, null, 30, null)
 go
 
 INSERT INTO Pedidos(conta_id, status, dataEntrega) VALUES(1, 0, GETDATE())

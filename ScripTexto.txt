@@ -1,0 +1,98 @@
+CREATE TABLE Pessoas
+(
+	id		int				not null primary key identity,
+	nome	varchar(50)		not null,
+	email	varchar(100)	not null unique,
+	senha	varchar(32)		not null,
+	cpf		varchar(16)		not null unique,
+	imagem	varchar(max)		null
+)
+GO
+
+CREATE TABLE ClientesVIP
+(
+	pessoa_id				int				not null ,
+	porcentagemDesconto		decimal(4,2)	not null
+	primary key(pessoa_id),
+	foreign key(pessoa_id)	references Pessoas(id)
+)
+GO
+
+CREATE TABLE Funcionarios
+(
+	pessoa_id		int				not null primary key,
+	cargo			varchar(24)		not null,
+	salario			decimal(10,2)	not null,
+	horarioEntrada	datetime			null,
+	horarioSaida	datetime			null
+		
+	foreign key(pessoa_id)	references Pessoas(id)
+)
+GO
+
+CREATE TABLE Produtos
+(
+	id				int				not null primary key identity,
+	nome			varchar(100)	not null,
+	preco			decimal(10,2)	not null,
+	descricao		varchar(max)		null,
+	categoria		int				not null,
+	imagem			varchar(max)		null,
+	tempoPreparo	int					null,
+	estoque			int					null
+)
+GO
+
+CREATE TABLE Localizacoes
+(
+	numero		int			not null primary key identity,
+	qtdLugares	int				null,
+	descricao	varchar(max)	null,
+	status		int			not null
+)
+GO
+
+
+CREATE TABLE Contas
+(
+	id				int			not null identity,
+	localizacao_id	int			not null,
+	cliente_id		int				null,
+	dataAbertura	datetime	not null,
+	dataFechamento	datetime		null,
+	status			int			not null,
+	valor			decimal(15,2)	null,
+	formaPagamento	int			    null
+
+	PRIMARY KEY(id),
+	foreign key(localizacao_id) references Localizacoes(numero),
+	foreign key(cliente_id) references ClientesVIP(pessoa_id)
+	
+)
+GO
+
+CREATE TABLE Pedidos
+(
+	id			int				not null primary key identity,
+	conta_id	int				not null,
+	status		int				not null,
+	dataEntrega datetime			null
+	foreign key(conta_id) references Contas(id)
+)
+go
+
+CREATE TABLE Itens
+(
+	produto_id			int				not null,
+	funcionario_id		int				not	null,
+	pedido_id			int				not null,
+	qtd					int				not null,
+	preco				decimal(10,2)	not null,
+	dataEntrega			datetime			null,
+	status				int				not null
+	PRIMARY KEY(produto_id, pedido_id, funcionario_id),
+	FOREIGN KEY(produto_id) references Produtos(id),
+	FOREIGN KEY(funcionario_id) references Funcionarios(pessoa_id),
+	FOREIGN KEY(pedido_id) references Pedidos(id)
+)
+GO
